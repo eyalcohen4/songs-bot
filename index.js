@@ -12,9 +12,13 @@ module.exports = function(bp) {
         data = JSON.parse(data);
 
         data.map(function (item) {
-            let text = item.lyrics.split(',');
-            let random = Math.floor((Math.random() * (20 - 2)) + 2);
-            console.log(text[random]);
+            let text = item.lyrics.split(',' || '\n');
+            let random = Math.floor((Math.random() * (text.length - 2)) + 2);
+
+            if (text[random].length >= 300) {
+                text[random] = text[random].slice(1, 299);
+            }
+
             bp.messenger.sendText(event.user.id, text[random]);
             return null;
         });
