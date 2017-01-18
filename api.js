@@ -14,4 +14,4 @@ function sendRequest(url, resolve, reject) {
 
 module.exports = {
     sendRequest: sendRequest,
-}
+};
