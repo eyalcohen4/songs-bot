@@ -17,6 +17,16 @@ function getByNameError() {
 module.exports = function(bp) {
   bp.middlewares.load();
 
+    bp.hear("something", event => {
+        bp.messenger.sendText(event.user.id, "something")
+        let handled = false
+        bp.hear({text: 'Another',  "user.id": event.user.id}, (event, next) => {
+            if (handled) { return next() }
+            handled = true
+            bp.messenger.sendText(event.user.id, "Another Something")
+        })
+    })
+
    bp.hear(/[\u0590-\u05FF]/, (event, next) => {
        let term = encodeUrl(event.text);
         api.sendRequest(`http://localhost:3001/api/songs/name/${term}`).then(data => {
