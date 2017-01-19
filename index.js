@@ -32,25 +32,20 @@ module.exports = function(bp) {
            let song = helpers.songToRow(data);
 
             bp.messenger.sendText(event.user.id, `${song.line} \n תמשיך אותי ${event.user.first_name}`);
+            let payload = {
+                   template_type: "generic",
+                   elements: [{
+                       title: 'מה ההמשך?',
+                       buttons: [ {
+                           type: 'postback',
+                           title: song.nextLine,
+                           payload: 'great!',
+                       }]
+                   }]
+           };
+           bp.messenger.sendTemplate(event.user.id, payload);
 
-            bp.hear({text: song.nextLine,  "user.id": event.user.id}, (event, next) => {
-               if (handled) { return next() }
-               handled = true;
-               bp.messenger.sendText(event.user.id, "ענק!!!")
-           });
        });
-       //
-       //  api.sendRequest(`http://localhost:3001/api/songs/name/${term}`).then(data => {
-       //      if (data.length === 0) {
-       //          bp.messenger.sendText(event.user.id, `${event.user.first_name} ${event.user.last_name}, אני באמת לא מבין אותך`);
-       //      }
-       //
-       //      bp.messenger.sendText(event.user.id, `${text} \n תמשיך אותי ${event.user.first_name}`);
-       //
-       //  }, error => {
-       //      console.log(error);
-       //      bp.messenger.sendText(event.user.id, `${event.user.first_name} ${event.user.last_name}, אני באמת לא מבין אותך`);
-       // })
     });
 
     bp.hear('alex', event => {
